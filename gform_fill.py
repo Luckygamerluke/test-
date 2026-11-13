@@ -38,9 +38,15 @@ def norm(s):
 
 
 def form_urls(url):
-    m = re.search(r"/forms/d/e/([^/]+)", url)
+    m = re.search(r"/forms/d/e/([^/?#]+)", url)
+    if not m and "forms.gle" in url:  # lien court: on suit la redirection
+        try:
+            final = requests.get(url, timeout=30, allow_redirects=True).url
+        except requests.RequestException as e:
+            sys.exit(f"Impossible de suivre le lien court: {e}")
+        m = re.search(r"/forms/d/e/([^/?#]+)", final)
     if not m:
-        sys.exit("URL invalide: utilise le lien public .../forms/d/e/.../viewform")
+        sys.exit("URL invalide: utilise le lien .../forms/d/e/.../viewform ou un lien forms.gle")
     base = f"https://docs.google.com/forms/d/e/{m.group(1)}"
     return base + "/viewform", base + "/formResponse"
 
@@ -247,7 +253,7 @@ def main():
     ap.add_argument("--encoding", default="utf-8-sig")
     a = ap.parse_args()
 
-    print("gform_fill v4")
+    print("gform_fill v5")
     view, post = form_urls(a.url)
     s = requests.Session()
     qs, fbzx = parse_form(s.get(view, timeout=30).text)
