@@ -208,6 +208,22 @@ def build(qs, mapping, row, forced_by_entry):
     return payload, sorted(pages), problems
 
 
+def judge(text):
+    """Analyse la page renvoyée par Google. Retourne (statut, détail)."""
+    low = text.lower()
+    ok_marks = ["freebirdformviewerviewresponseconfirmationmessage", "a bien été enregistrée",
+                "response has been recorded", "envoyer une autre réponse", "submit another response",
+                "viewform?edit2=", "your response has been"]
+    if any(m in low for m in ok_marks):
+        return "ok", ""
+    plain = re.sub(r"<script.*?</script>|<style.*?</style>", " ", text, flags=re.S)
+    plain = re.sub(r"<[^>]+>", " ", plain)
+    plain = re.sub(r"\s+", " ", plain).strip()
+    err = [m for m in ["obligatoire", "required", "invalide", "invalid", "erreur", "error",
+                        "doit être", "must be", "connecter", "sign in", "sign-in"] if m in low]
+    return ("erreur" if err else "inconnu"), f"mots repérés: {err}  | début de page: {plain[:300]}"
+
+
 def read_csv(path, encoding):
     with open(path, newline="", encoding=encoding) as f:
         head = f.readline()
@@ -280,14 +296,16 @@ def main():
             continue
         try:
             r = s.post(post, data=payload, timeout=30, headers={"Referer": view})
-            good = r.status_code == 200 and "freebirdFormviewerViewResponseConfirmationMessage" in r.text \
-                or r.status_code == 200 and "Votre réponse a bien été enregistrée" in r.text \
-                or r.status_code == 200 and "response has been recorded" in r.text
+            status, detail = judge(r.text) if r.status_code == 200 else ("http", f"HTTP {r.status_code}")
+            good = status == "ok"
+            if not good:
+                open("reponse_google.html", "w", encoding="utf-8").write(r.text)
         except requests.RequestException as e:
-            good, r = False, e
-        print(f"[ligne {i}] {'envoyée' if good else 'ÉCHEC (voir ci-dessous)'}")
-        if not good and hasattr(r, "status_code"):
-            print(f"   HTTP {r.status_code}: la page de confirmation n'a pas été reconnue")
+            good, status, detail = False, "réseau", str(e)
+        print(f"[ligne {i}] {'envoyée' if good else 'ÉCHEC (' + status + ')'}")
+        if not good:
+            print(f"   {detail}")
+            print("   (page complète sauvegardée dans reponse_google.html)")
         ok += bool(good)
         ko += not good
         time.sleep(a.delay)
