@@ -69,6 +69,17 @@ def split_vals(v, qtype):
     return [x.strip() for x in v.split("|") if x.strip()] if qtype == 4 else [v.strip()]
 
 
+STOP = {"de", "des", "du", "la", "le", "les", "et", "ou", "a", "un", "une", "par", "avec", "en", "au",
+        "que", "qui", "pour", "sur", "ce"}
+
+
+def tokens(s):
+    import unicodedata
+    s = unicodedata.normalize("NFD", s.lower())
+    s = "".join(ch for ch in s if unicodedata.category(ch) != "Mn")
+    return {t for t in re.findall(r"[a-z0-9]+", s.replace(",", ".")) if t not in STOP}
+
+
 def resolve(val, options, forced=None):
     """Trouve l'option du formulaire qui correspond à val (ou None)."""
     if forced and val in forced:
@@ -83,6 +94,16 @@ def resolve(val, options, forced=None):
         for o in options:
             if stem in norm(o):
                 return o
+    tv = tokens(val)
+    if tv:
+        full = [(len(tv) / len(tokens(o) | tv), o) for o in options if tv <= tokens(o)]
+        if len(full) == 1:
+            return full[0][1]
+        if len(full) > 1:
+            full.sort(reverse=True)
+            if full[0][0] > full[1][0]:
+                return full[0][1]
+            return None
     close = difflib.get_close_matches(val, options, n=1, cutoff=0.85)
     return close[0] if close else None
 
@@ -117,6 +138,23 @@ def auto_mapping(qs, rows, cols):
         mapping[q["entry"]] = {"title": q["title"], "column": c, "values": {}}
         pointer = i
     return mapping
+
+
+def load_mapping(path, qs):
+    raw = json.load(open(path, encoding="utf-8"))
+    by_num = {}
+    for q in qs:
+        m = re.match(r"\s*Q(\d+)\b", q["title"])
+        if m:
+            by_num[f"Q{m.group(1)}"] = q["entry"]
+    out = {}
+    for k, v in raw.items():
+        entry = by_num.get(k) or (int(k) if k.isdigit() else None)
+        if entry is None:
+            print(f"(mapping: clé {k} introuvable dans le formulaire, ignorée)")
+            continue
+        out[entry] = v
+    return out
 
 
 def build(qs, mapping, row, forced_by_entry):
@@ -205,16 +243,21 @@ def main():
 
     rows, fields = read_csv(a.csv, a.encoding)
     cols = [c for c in fields if norm(c) not in IGNORE_COLS]
-    if a.mapping:
-        raw = json.load(open(a.mapping, encoding="utf-8"))
-        mapping = {int(k): v for k, v in raw.items()}
+    import os
+    default_map = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapping.json")
+    if a.mapping or os.path.exists(default_map):
+        mapping = load_mapping(a.mapping or default_map, qs)
     else:
         mapping = auto_mapping(qs, rows, cols)
     forced = {e: m.get("values", {}) for e, m in mapping.items()}
 
     if a.save_mapping:
-        json.dump({str(k): v for k, v in mapping.items()}, open(a.save_mapping, "w", encoding="utf-8"),
-                  ensure_ascii=False, indent=2)
+        keyed = {}
+        for q in qs:
+            if q["entry"] in mapping:
+                n = re.match(r"\s*Q(\d+)\b", q["title"])
+                keyed[f"Q{n.group(1)}" if n else str(q["entry"])] = mapping[q["entry"]]
+        json.dump(keyed, open(a.save_mapping, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
         print(f"Mapping écrit dans {a.save_mapping}")
     if a.show_mapping or a.save_mapping:
         for q in qs:

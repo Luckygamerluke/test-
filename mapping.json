@@ -1,0 +1,34 @@
+{
+  "Q1":  {"column": "profile", "values": {
+            "consumer": "Un consommateur réunionnais",
+            "distributor": "Un professionnel de la distribution ou de l'import-export à La Réunion",
+            "restaurant": "Un gérant de restaurant, épicerie fine ou boutique bio à La Réunion"}},
+  "Q2":  {"column": "past"},
+  "Q3":  {"column": "open"},
+  "Q4":  {"column": "criteria"},
+  "Q5":  {"column": "image"},
+  "Q6":  {"column": "partnership"},
+  "Q7":  {"column": "difficulties"},
+  "Q8":  {"column": "collab"},
+  "Q9":  {"column": "offer"},
+  "Q10": {"column": "cor", "values": {
+            "Je le connais bien": "Oui, je le connais bien",
+            "J'en ai entendu parler": "Oui, j'en ai entendu parler",
+            "Jamais entendu parler": "Non, jamais entendu parler"}},
+  "Q11": {"column": "interest"},
+  "Q12": {"column": "price"},
+  "Q13": {"column": "arguments", "values": {
+            "Naturel / sans sucres ajoutés": "Origine naturelle et sans sucres ajoutés"}},
+  "Q14": {"column": "origin"},
+  "Q15": {"column": "freq"},
+  "Q16": {"column": "juice"},
+  "Q17": {"column": "cor"},
+  "Q18": {"column": "natural"},
+  "Q19": {"column": "image"},
+  "Q20": {"column": "intent", "values": {
+            "Peut-être, besoin d'informations": "Peut-être, j'aurais besoin d'en savoir plus sur le produit"}},
+  "Q21": {"column": "price"},
+  "Q22": {"column": "channel"},
+  "Q23": {"column": "cert", "values": {
+            "Aucun changement": "Non, ça ne change pas grand chose"}}
+}
