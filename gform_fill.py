@@ -219,8 +219,8 @@ def judge(text):
     plain = re.sub(r"<script.*?</script>|<style.*?</style>", " ", text, flags=re.S)
     plain = re.sub(r"<[^>]+>", " ", plain)
     plain = re.sub(r"\s+", " ", plain).strip()
-    err = [m for m in ["obligatoire", "required", "invalide", "invalid", "erreur", "error",
-                        "doit être", "must be", "connecter", "sign in", "sign-in"] if m in low]
+    err = [m for m in ["cette question est obligatoire", "this is a required question",
+                        "réponse invalide", "invalid"] if m in plain.lower()]
     return ("erreur" if err else "inconnu"), f"mots repérés: {err}  | début de page: {plain[:300]}"
 
 
@@ -247,6 +247,7 @@ def main():
     ap.add_argument("--encoding", default="utf-8-sig")
     a = ap.parse_args()
 
+    print("gform_fill v4")
     view, post = form_urls(a.url)
     s = requests.Session()
     qs, fbzx = parse_form(s.get(view, timeout=30).text)
@@ -297,19 +298,18 @@ def main():
         try:
             r = s.post(post, data=payload, timeout=30, headers={"Referer": view})
             status, detail = judge(r.text) if r.status_code == 200 else ("http", f"HTTP {r.status_code}")
-            good = status == "ok"
-            if not good:
+            good = status in ("ok", "inconnu")
+            if status != "ok":
                 open("reponse_google.html", "w", encoding="utf-8").write(r.text)
         except requests.RequestException as e:
             good, status, detail = False, "réseau", str(e)
-        print(f"[ligne {i}] {'envoyée' if good else 'ÉCHEC (' + status + ')'}")
-        if not good:
+        print(f"[ligne {i}] {('envoyée' if status == 'ok' else 'envoyée (probable, à vérifier dans Forms)') if good else 'ÉCHEC (' + status + ')'}")
+        if not good or status == "inconnu":
             print(f"   {detail}")
-            print("   (page complète sauvegardée dans reponse_google.html)")
         ok += bool(good)
         ko += not good
         time.sleep(a.delay)
-    print(f"\nTerminé: {ok} ok, {ko} en échec.")
+    print(f"\nTerminé: {ok} envoyées, {ko} en échec. Compare avec le nombre de réponses dans Google Forms.")
 
 
 if __name__ == "__main__":
