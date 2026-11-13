@@ -169,7 +169,8 @@ def build(qs, mapping, row, forced_by_entry):
     (c'est comme ça qu'on sépare consommateur / distributeur / restaurant)."""
     def answer(q):
         m = mapping.get(q["entry"])
-        return (row.get(m["column"], "") if m else "").strip()
+        v = (row.get(m["column"], "") if m else "").strip().replace("\u2019", "'")
+        return re.sub(r"^(\d+)\.0+$", r"\1", v)
 
     def valid(q, val):
         if not val:
@@ -253,7 +254,7 @@ def main():
     ap.add_argument("--encoding", default="utf-8-sig")
     a = ap.parse_args()
 
-    print("gform_fill v5")
+    print("gform_fill v6")
     view, post = form_urls(a.url)
     s = requests.Session()
     qs, fbzx = parse_form(s.get(view, timeout=30).text)
@@ -266,12 +267,22 @@ def main():
 
     rows, fields = read_csv(a.csv, a.encoding)
     cols = [c for c in fields if norm(c) not in IGNORE_COLS]
+    import glob
     import os
-    default_map = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapping.json")
-    if a.mapping or os.path.exists(default_map):
-        mapping = load_mapping(a.mapping or default_map, qs)
+    here = os.path.dirname(os.path.abspath(__file__))
+    path = a.mapping
+    if not path:
+        for p in sorted(glob.glob(os.path.join(here, "mapping*.json"))):
+            needed = {v["column"] for v in json.load(open(p, encoding="utf-8")).values()}
+            if needed <= set(fields):
+                path = p
+                break
+    if path:
+        mapping = load_mapping(path, qs)
+        print(f"mapping: {os.path.basename(path)}")
     else:
         mapping = auto_mapping(qs, rows, cols)
+        print("mapping: automatique (aucun fichier mapping*.json ne correspond aux colonnes du CSV)")
     forced = {e: m.get("values", {}) for e, m in mapping.items()}
 
     if a.save_mapping:

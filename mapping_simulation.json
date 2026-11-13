@@ -1,0 +1,170 @@
+{
+  "Q1": {
+    "column": "Profil répondant",
+    "values": {
+      "Consommateur": "Un consommateur réunionnais",
+      "Distributeur / importateur": "Un professionnel de la distribution ou de l'import-export à La Réunion",
+      "Restaurateur / épicerie / commerce bio": "Un gérant de restaurant, épicerie fine ou boutique bio à La Réunion"
+    }
+  },
+  "Q2": {
+    "column": "Expérience avec des fournisseurs malgaches",
+    "values": {
+      "Régulièrement": "Oui, régulièrement",
+      "Occasionnellement": "Oui, ponctuellement",
+      "Jamais": "Non, jamais",
+      "En prospection": "En cours de prospection"
+    }
+  },
+  "Q3": {
+    "column": "Ouverture à distribuer le jus (1-5)"
+  },
+  "Q4": {
+    "column": "Critères prioritaires à l’import",
+    "values": {
+      "Certification HACCP / ISO 22000": "Certification sanitaire (HACCP, ISO 22000)",
+      "Prix compétitif": "Prix compétitif par rapport aux produits existants",
+      "Volumes minimums garantis": "Volumes minimums garantis par le fournisseur",
+      "Approvisionnement régulier et fiable": "Régularité et fiabilité des approvisionnements",
+      "Origine et traçabilité": "Origine et traçabilité du produit",
+      "Notoriété de la marque": "Notoriété de la marque",
+      "Différenciation du produit": "Différenciation par rapport aux produits déjà en rayon"
+    }
+  },
+  "Q5": {
+    "column": "Image des produits alimentaires malgaches",
+    "values": {
+      "Ne sait pas": "Je ne connais pas de produits malgaches"
+    }
+  },
+  "Q6": {
+    "column": "Facilité apportée par un partenariat formalisé (1-5)"
+  },
+  "Q7": {
+    "column": "Difficultés anticipées",
+    "values": {
+      "Certification sanitaire européenne": "Obtention des certifications sanitaires européennes",
+      "Coût du fret et logistique": "Coûts logistiques et fret maritime",
+      "Volumes insuffisants": "Volumes insuffisants",
+      "Manque de notoriété": "Image et notoriété du produit à construire",
+      "Conditions de paiement": "Délais de paiement et conditions financières",
+      "Formalités douanières et réglementaires": "Barrières réglementaires douanières"
+    }
+  },
+  "Q8": {
+    "column": "Mode de collaboration préféré",
+    "values": {
+      "Importation directe": "Importation directe sans intermédiaire",
+      "Agent local / transitaire": "Partenariat avec un agent ou transitaire local",
+      "Distribution exclusive": "Contrat de distribution exclusive",
+      "Achats ponctuels": "Achat ponctuel selon disponibilité et commande"
+    }
+  },
+  "Q9": {
+    "column": "Offre actuelle de produits exotiques / régionaux",
+    "values": {
+      "Régulièrement": "Oui, régulièrement",
+      "Occasionnellement": "Oui, occasionnellement",
+      "Pas encore": "Non, pas encore"
+    }
+  },
+  "Q10": {
+    "column": "Connaissance du corossol",
+    "values": {
+      "Connaît bien": "Oui, je le connais bien",
+      "En a déjà entendu parler": "Oui, j'en ai entendu parler",
+      "Ne connaît pas": "Non, jamais entendu parler"
+    }
+  },
+  "Q11": {
+    "column": "Intérêt pour le jus malgache (1-5)"
+  },
+  "Q12": {
+    "column": "Prix d’achat professionnel acceptable pour 50 cl",
+    "values": {
+      "Moins de 1,50 €": "Moins de 1,50€",
+      "1,50 à 2,50 €": "Entre 1,50€ et 2,50€",
+      "2,50 à 3,50 €": "Entre 2,50€ et 3,50€",
+      "Plus de 3,50 €": "Plus de 3,50€"
+    }
+  },
+  "Q13": {
+    "column": "Arguments commerciaux convaincants",
+    "values": {
+      "Certification sanitaire européenne": "Certification sanitaire européenne (HACCP)",
+      "Naturel / sans sucre ajouté": "Origine naturelle et sans sucres ajoutés",
+      "Caractère exotique et différenciant": "Exotisme et différenciation par rapport aux produits existants",
+      "Prix compétitif": "Prix compétitif",
+      "Qualité du packaging": "Présentation et packaging soigné",
+      "Histoire de la marque et origine": "Histoire et identité de la marque"
+    }
+  },
+  "Q14": {
+    "column": "Origine malgache comme argument de vente (1-5)"
+  },
+  "Q15": {
+    "column": "Fréquence de consommation de jus"
+  },
+  "Q16": {
+    "column": "Types de jus consommés",
+    "values": {
+      "Jus industriels de supermarché": "Jus industriels en grande surface (Tropicana, Andros, MDD)",
+      "Jus frais du marché": "Jus frais locaux achetés au marché",
+      "Jus bio / naturels sans sucre ajouté": "Jus bio ou naturels sans sucres ajoutés",
+      "Smoothies": "Smoothies"
+    }
+  },
+  "Q17": {
+    "column": "Connaissance du corossol",
+    "values": {
+      "Consomme régulièrement": "Oui, j'en consomme régulièrement",
+      "A déjà goûté": "Oui, j'en ai déjà goûté",
+      "En a déjà entendu parler": "J'en ai entendu parler mais jamais goûté",
+      "Ne connaît pas": "Non, je ne connais pas ce fruit"
+    }
+  },
+  "Q18": {
+    "column": "Influence de l’origine naturelle/exotique (1-5)"
+  },
+  "Q19": {
+    "column": "Image des produits alimentaires malgaches",
+    "values": {
+      "Ne sait pas": "Je ne connais pas de produits malgaches"
+    }
+  },
+  "Q20": {
+    "column": "Intention d’achat du jus malgache",
+    "values": {
+      "Oui, sans hésiter": "Oui, sans hésitation",
+      "Peut-être, besoin d'informations": "Peut-être, j'aurais besoin d'en savoir plus sur le produit"
+    }
+  },
+  "Q21": {
+    "column": "Prix acceptable pour 50 cl",
+    "values": {
+      "Moins de 2 €": "Moins de 2€",
+      "2 à 3 €": "Entre 2€ et 3€",
+      "3 à 4 €": "Entre 3€ et 4€",
+      "Plus de 4 €": "Plus de 4€"
+    }
+  },
+  "Q22": {
+    "column": "Canaux d’achat préférés",
+    "values": {
+      "Grande surface": "Grande surface (Carrefour, Leclerc, U)",
+      "Épicerie fine / magasin bio": "Épicerie fine ou boutique bio",
+      "Marché local": "Marché local",
+      "Restaurant / café": "Restaurant ou café",
+      "Vente en ligne": "En ligne"
+    }
+  },
+  "Q23": {
+    "column": "Importance de la certification sanitaire européenne",
+    "values": {
+      "Indispensable": "Oui, c'est indispensable pour moi",
+      "Un plus, mais pas obligatoire": "Oui, c'est un plus mais pas obligatoire",
+      "Aucun changement": "Non, ça ne change pas grand chose",
+      "Ne sait pas ce que c'est": "Je ne sais pas ce que c'est"
+    }
+  }
+}
